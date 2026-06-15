@@ -30,3 +30,4 @@ jobs:
         name: lec_data-windows
         path: |
           **/*.exe
+
