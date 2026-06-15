@@ -1,24 +1,32 @@
-QT       += core gui
+name: Build Qt Project
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-CONFIG += c++17
+jobs:
+  build-windows:
+    runs-on: windows-latest
 
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-SOURCES += \
-    main.cpp \
-    mainwindow.cpp
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: '5.15.2'
 
-HEADERS += \
-    mainwindow.h
+    - name: Build project
+      run: |
+        qmake lec_data.pro
+        mingw32-make
 
-FORMS += \
-    mainwindow.ui
-
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+    - name: Upload executable
+      uses: actions/upload-artifact@v4
+      with:
+        name: lec_data-windows
+        path: |
+          **/*.exe
