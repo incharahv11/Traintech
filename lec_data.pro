@@ -1,33 +1,14 @@
-name: Build Qt Project
+QT += core gui widgets serialport
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+TARGET = lec_data
+TEMPLATE = app
 
-jobs:
-  build-windows:
-    runs-on: windows-latest
+SOURCES += \
+    main.cpp \
+    mainwindow.cpp
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+HEADERS += \
+    mainwindow.h
 
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v4
-      with:
-        version: '5.15.2'
-
-    - name: Build project
-      run: |
-        qmake lec_data.pro
-        mingw32-make
-
-    - name: Upload executable
-      uses: actions/upload-artifact@v4
-      with:
-        name: lec_data-windows
-        path: |
-          **/*.exe
-
+FORMS += \
+    mainwindow.ui
