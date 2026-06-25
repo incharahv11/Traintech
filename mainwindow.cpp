@@ -932,19 +932,7 @@ void MainWindow::setupFrozenTable()
 void MainWindow::setupDataTable()
 {
     dataTableWidget = new QTableWidget();
-    dataTableWidget->setSortingEnabled(true);
-    dataTableWidget->setSelectionBehavior(QAbstractItemView::SelectItems);
-    dataTableWidget->setAlternatingRowColors(true);
-    dataTableWidget->verticalHeader()->setVisible(false);
-    dataTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    dataTableWidget->setMouseTracking(true);
-    dataTableWidget->setSelectionMode(QAbstractItemView::NoSelection);  // Disable default selection
-
-    dataTableWidget->setStyleSheet(
-        "QTableWidget { background:white; color:black; gridline-color:#d0d0d0; }"
-        "QTableWidget::item:selected { background-color: transparent; }"
-        "QTableWidget::item:focus { outline: none; }");
-    QStringList headers;
+        headers.clear();   // Add this line
 
     headers << "DATE" << "TIME" << "SPEED" << "OHE_VOLT" << "OHE_CURR" << "ENER_CONS"
             << "BAT_VOLT" << "BP_PRES" << "TE_BE_DEM" << "TE_BE_BG1" << "TE_BE_BG2"
@@ -960,11 +948,11 @@ void MainWindow::setupDataTable()
     dataTableWidget->setColumnCount(43);
     QStringList dataHeaders = headers.mid(2);
     dataTableWidget->setHorizontalHeaderLabels(dataHeaders);
+
     for(int i = 0; i < 43; i++) {
         dataTableWidget->setColumnWidth(i, DEFAULT_COLUMN_WIDTH);
     }
 }
-
 void MainWindow::setupSettingsPage()
 {
     QWidget *settingsPage = new QWidget;
